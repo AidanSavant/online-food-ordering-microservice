@@ -1,0 +1,14 @@
+/home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/deps/libthiserror-bd3ac2288c437085.rmeta: /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs /home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/build/thiserror-f8858458073ab21c/out/private.rs
+
+/home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/deps/libthiserror-bd3ac2288c437085.rlib: /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs /home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/build/thiserror-f8858458073ab21c/out/private.rs
+
+/home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/deps/thiserror-bd3ac2288c437085.d: /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs /home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs /home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/build/thiserror-f8858458073ab21c/out/private.rs
+
+/home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs:
+/home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs:
+/home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs:
+/home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs:
+/home/a/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs:
+/home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/build/thiserror-f8858458073ab21c/out/private.rs:
+
+# env-dep:OUT_DIR=/home/a/neumont/SEN300/online-food-ordering-microservice/services/catalog_service/target/debug/build/thiserror-f8858458073ab21c/out
