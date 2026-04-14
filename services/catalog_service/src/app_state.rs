@@ -5,3 +5,4 @@ use crate::repository::CatalogRepository;
 pub struct AppState {
     pub repo: Arc<dyn CatalogRepository>,
 }
+

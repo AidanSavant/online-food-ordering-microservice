@@ -1,5 +1,5 @@
-mod catalog;
 mod impls;
+mod catalog_repo_trait;
 
-pub use catalog::*;
 pub use impls::*;
+pub use catalog_repo_trait::*;

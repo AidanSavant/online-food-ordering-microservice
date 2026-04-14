@@ -2,11 +2,12 @@ mod dto;
 mod errors;
 mod models;
 mod router;
-mod handlers;
 mod app_state;
+mod handlers;
 mod repository;
 
 use std::sync::Arc;
+
 use app_state::AppState;
 use repository::PostgresRepository;
 
@@ -21,7 +22,7 @@ async fn main() {
         .with_env_filter(EnvFilter::new("catalog_service=debug,tower_http=info"))
         .init();
 
-    tracing::info!("Catalog Service Starting...");
+    tracing::info!("Catalog service starting...");
 
     let database_url = std::env::var("DATABASE_URL")
         .expect("Failed to find DATABASE_URL environment variable!");
@@ -57,3 +58,4 @@ async fn main() {
         .await
         .expect("Failed to start the server!");
 }
+
