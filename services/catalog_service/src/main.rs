@@ -24,15 +24,15 @@ async fn main() {
 
     tracing::info!("Catalog service starting...");
 
-    let database_url = std::env::var("DATABASE_URL")
-        .expect("Failed to find DATABASE_URL environment variable!");
+    let database_url = std::env::var("POSTGRES_CATALOG_URL")
+        .expect("Failed to find 'POSTGRES_CATALOG_URL' environment variable!");
 
-    tracing::info!("Connected to the database at: {database_url}!");
+    tracing::info!("Connected to the catalog database at: {database_url}!");
 
     let pool = PgPoolOptions::new()
         .connect(&database_url)
         .await
-        .expect("Failed to connect to the database!");
+        .expect("Failed to connect to the catalog database!");
 
     tracing::info!("Running database migrations...");
 
@@ -41,7 +41,7 @@ async fn main() {
         .await
         .expect("Failed to run database migrations!");
 
-    tracing::info!("Connected to the database!");
+    tracing::info!("Connected to the catalog database!");
 
     let state = AppState {
         repo: Arc::new(PostgresRepository::new(pool)),

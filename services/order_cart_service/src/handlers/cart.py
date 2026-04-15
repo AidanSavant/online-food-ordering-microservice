@@ -5,7 +5,7 @@ from models.cart import Cart, CartItem, ItemQuantity
 from repository.cart_repo_base import CartRepositoryABC
 from errors.exceptions import NotFoundException, CartBaseException
 
-router: APIRouter = APIRouter()
+router: APIRouter = APIRouter(prefix="/cart", tags=["cart"])
 
 async def get_repository() -> CartRepositoryABC:
     ...
@@ -17,7 +17,7 @@ async def _get_cart(
     cart = await repo.get_cart(cart_id)
     if not cart:
         raise NotFoundException(f"Cart with id {cart_id} not found")
-    
+
     return cart
 
 @router.get("/{user_id}")
@@ -65,3 +65,4 @@ async def delete_cart_handler(
     repo: CartRepositoryABC = Depends(get_repository)
 ) -> bool:
     return await repo.delete_cart(user_id)
+

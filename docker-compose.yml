@@ -2,19 +2,19 @@ services:
   catalog_service:
     build: ./services/catalog_service
     
-    ports: 
+    ports:
       - "8001:8001"
     
     environment:
-      - DATABASE_URL=postgres://catalog_user:yeahidk123!@postgres:5432/catalog_db
+      - POSTGRES_CATALOG_URL=postgres://postgres:yeahidk123!@catalog_postgres:5432/catalog_db
     
     depends_on:
-      postgres:
+      catalog_postgres:
         condition: service_healthy
 
   order_cart_service:
     build: ./services/order_cart_service
-
+    
     ports:
       - "8002:8002"
     
@@ -25,30 +25,72 @@ services:
       redis:
         condition: service_healthy
 
-  postgres:
-    image: postgres:latest
+  customer_service:
+    build: ./services/customer_service
+    
+    ports:
+      - "8003:8003"
   
     environment:
-      POSTGRES_USER: catalog_user
+      - POSTGRES_CUSTOMER_URL=postgresql+asyncpg://postgres:yeahidk123!@customer_postgres:5432/customer_db
+      - JWT_SECRET=supersecretkey123!1!!@3sadfasdfsarer
+    
+    depends_on:
+      customer_postgres:
+        condition: service_healthy
+
+  catalog_postgres:
+    image: postgres:latest
+    
+    environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: yeahidk123!
       POSTGRES_DB: catalog_db
     
     ports:
       - "5432:5432"
-
+    
+    logging:
+      driver: "none"
+    
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U catalog_user -d catalog_db"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d catalog_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  customer_postgres:
+    image: postgres:latest
+    
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yeahidk123!
+      POSTGRES_DB: customer_db
+    
+    ports:
+      - "5433:5432"
+    
+    logging:
+      driver: "none"
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d customer_db"]
       interval: 5s
       timeout: 5s
       retries: 3
 
   redis:
     image: redis:latest
+    
     ports:
       - "6379:6379"
-
+    
+    logging:
+      driver: "none"
+    
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 3
+      

@@ -12,7 +12,7 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 
-load_dotenv()
+load_dotenv(override=False)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI):
 
     redis_url = os.getenv("REDIS_URL")
     if redis_url is None:
-        raise RuntimeError("Failed to find REDIS_URL in environment variables! Make sure it is set!")
+        raise RuntimeError("Failed to find 'REDIS_URL' in environment variables! Make sure it is set!")
 
     logging.info(f"Connecting to Redis at {redis_url}...")
 
@@ -54,4 +54,4 @@ async def cart_exception_handler(_, exc: CartBaseException):
         content={"detail": exc.message}
     )
 
-app.include_router(router, prefix="/cart", tags=["cart"])
+app.include_router(router)
