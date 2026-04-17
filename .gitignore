@@ -1,29 +1,37 @@
-target/
-**/*.rs.bk
-Cargo.lock
-
-__pycache__/
-*.py[cod]
-*.pyo
-.venv/
-venv/
-env/
-*.egg-info/
-dist/
-build/
-.pytest_cache/
-
+# Environment files
 .env
 .env.local
 .env.*.local
+**/.env
 
+# Rust build artifacts
+**/target/
+**/*.rs.bk
+
+# Python cache
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/.pytest_cache/
+**/.venv/
+**/venv/
+**/env/
+**/*.egg-info/
+**/dist/
+**/build/
+
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
+# OS
 .DS_Store
 Thumbs.db
 
+# Docker
 *.log
 
+# sqlx offline cache — keep this, needed for Docker builds
+# !**/.sqlx

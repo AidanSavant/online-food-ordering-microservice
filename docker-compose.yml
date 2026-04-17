@@ -6,7 +6,7 @@ services:
       - "8001:8001"
     
     environment:
-      - POSTGRES_CATALOG_URL=postgres://postgres:yeahidk123!@catalog_postgres:5432/catalog_db
+      - POSTGRES_CATALOG_URL=postgres://postgres:${DB_PASSWORD}@catalog_postgres:5432/catalog_db
     
     depends_on:
       catalog_postgres:
@@ -30,10 +30,10 @@ services:
     
     ports:
       - "8003:8003"
-  
+    
     environment:
-      - POSTGRES_CUSTOMER_URL=postgresql+asyncpg://postgres:yeahidk123!@customer_postgres:5432/customer_db
-      - JWT_SECRET=supersecretkey123!1!!@3sadfasdfsarer
+      - POSTGRES_CUSTOMER_URL=postgresql+asyncpg://postgres:${DB_PASSWORD}@customer_postgres:5432/customer_db
+      - JWT_SECRET=${JWT_SECRET}
     
     depends_on:
       customer_postgres:
@@ -44,7 +44,7 @@ services:
     
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: yeahidk123!
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: catalog_db
     
     ports:
@@ -64,7 +64,7 @@ services:
     
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: yeahidk123!
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: customer_db
     
     ports:
@@ -93,4 +93,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
-      
