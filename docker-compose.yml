@@ -39,6 +39,19 @@ services:
       customer_postgres:
         condition: service_healthy
 
+  order_service:
+    build: ./services/order_service
+
+    ports:
+      - "8004:8004"
+  
+    environment:
+      - POSTGRES_ORDER_URL=postgresql://postgres:${DB_PASSWORD}@order_postgres:5432/order_db
+  
+    depends_on:
+      order_postgres:
+        condition: service_healthy
+
   catalog_postgres:
     image: postgres:latest
     
@@ -75,6 +88,26 @@ services:
     
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d customer_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  order_postgres:
+    image: postgres:latest
+    
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: order_db
+    
+    ports:
+      - "5434:5432"
+    
+    logging:
+      driver: "none"
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d order_db"]
       interval: 5s
       timeout: 5s
       retries: 3

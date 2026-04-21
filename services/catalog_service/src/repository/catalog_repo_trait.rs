@@ -3,8 +3,8 @@ use async_trait::async_trait;
 
 use crate::errors::CatalogResult;
 use crate::models::{Restaurant, MenuItem};
-use crate::dto::{MenuItemCreateDto, MenuItemUpdateDto};
-use crate::dto::{RestaurantCreateDto, RestaurantUpdateDto};
+use crate::dtos::{MenuItemCreateDto, MenuItemUpdateDto};
+use crate::dtos::{RestaurantCreateDto, RestaurantUpdateDto};
 
 #[async_trait]
 pub trait CatalogRepository: Send + Sync {

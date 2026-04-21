@@ -5,8 +5,8 @@ use async_trait::async_trait;
 use crate::repository::CatalogRepository;
 use crate::models::{Restaurant, MenuItem};
 use crate::errors::{CatalogError, CatalogResult};
-use crate::dto::{MenuItemCreateDto, MenuItemUpdateDto};
-use crate::dto::{RestaurantCreateDto, RestaurantUpdateDto};
+use crate::dtos::{MenuItemCreateDto, MenuItemUpdateDto};
+use crate::dtos::{RestaurantCreateDto, RestaurantUpdateDto};
 
 pub struct PostgresRepository {
     pool: PgPool,

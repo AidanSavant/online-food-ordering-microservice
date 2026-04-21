@@ -10,7 +10,7 @@ use validator::Validate;
 
 use crate::app_state::AppState;
 use crate::errors::{CatalogError, CatalogResult};
-use crate::dto::{MenuItemCreateDto, MenuItemUpdateDto, MenuItemResponse};
+use crate::dtos::{MenuItemCreateDto, MenuItemUpdateDto, MenuItemResponse};
 
 pub async fn get_menu_items_by_restaurant_id(
     State(state): State<AppState>,

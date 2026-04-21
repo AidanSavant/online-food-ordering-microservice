@@ -8,7 +8,7 @@ use axum::{
 
 use crate::app_state::AppState;
 use crate::errors::{CatalogError, CatalogResult};
-use crate::dto::{
+use crate::dtos::{
     RestaurantCreateDto, RestaurantUpdateDto,
     RestaurantResponse,
 };

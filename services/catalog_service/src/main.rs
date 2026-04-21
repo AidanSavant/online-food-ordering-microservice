@@ -1,4 +1,4 @@
-mod dto;
+mod dtos;
 mod errors;
 mod models;
 mod router;
