@@ -8,6 +8,10 @@
 **/target/
 **/*.rs.bk
 
+# Node.js
+services/order_service/node_modules/
+services/order_service/dist/
+
 # Python cache
 **/__pycache__/
 **/*.py[cod]
