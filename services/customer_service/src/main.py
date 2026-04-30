@@ -59,4 +59,4 @@ async def customer_exception_handler(_, exc: CustomerBaseException):
         content={"detail": exc.message}
     )
 
-app.include_router(router)
+app.include_router(router, prefix="/customers")

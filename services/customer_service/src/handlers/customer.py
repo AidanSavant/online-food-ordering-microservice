@@ -10,7 +10,7 @@ from dtos.customer import (
     LoginCustomerDto, RegisterCustomerDto, UpdateCustomerDto,CustomerResponse, TokenResponse
 )
 
-router: APIRouter = APIRouter(prefix="/customer", tags=["customer"])
+router: APIRouter = APIRouter(tags=["customer"])
 
 async def get_repository() -> CustomerRepositoryBase:
     ...
@@ -55,7 +55,7 @@ async def get_customer_by_id(
     customer = await repo.get_customer_by_id(customer_id)
     if not customer:
         raise NotFoundException(f"Customer with id {customer_id} not found!")
-    
+
     return CustomerResponse.from_customer(customer)
 
 @router.patch("/{customer_id}")
@@ -71,7 +71,7 @@ async def update_customer(
     updated_customer = await repo.update_customer(customer_id, update_dto)
     if not updated_customer:
         raise NotFoundException(f"Customer with id {customer_id} not found!")
-    
+
     return CustomerResponse.from_customer(updated_customer)
 
 @router.delete("/{customer_id}")
@@ -86,5 +86,5 @@ async def delete_customer(
     deleted = await repo.delete_customer(customer_id)
     if not deleted:
         raise NotFoundException(f"Customer with id {customer_id} not found!")
-    
+
     return True

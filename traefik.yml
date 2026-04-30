@@ -1,0 +1,16 @@
+api:
+  dashboard: true
+  insecure: true
+
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: online-food-ordering-microservice_microservice_network
+
+log:
+  level: INFO
+  

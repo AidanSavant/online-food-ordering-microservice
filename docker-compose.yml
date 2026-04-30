@@ -1,128 +1,201 @@
 services:
+  traefik:
+    image: traefik:v3.0
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+    networks:
+      - microservice_network
+
   catalog_service:
     build: ./services/catalog_service
-    
     ports:
       - "8001:8001"
-    
     environment:
       - POSTGRES_CATALOG_URL=postgres://postgres:${DB_PASSWORD}@catalog_postgres:5432/catalog_db
-    
     depends_on:
       catalog_postgres:
         condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.catalog.rule=PathPrefix(`/api/restaurants`)"
+      - "traefik.http.routers.catalog.entrypoints=web"
+      - "traefik.http.services.catalog.loadbalancer.server.port=8001"
+      - "traefik.http.middlewares.catalog-strip.stripprefix.prefixes=/api"
+      - "traefik.http.routers.catalog.middlewares=catalog-strip"
+    networks:
+      - microservice_network
 
   order_cart_service:
     build: ./services/order_cart_service
-    
     ports:
       - "8002:8002"
-    
     environment:
       - REDIS_URL=redis://redis:6379
-    
     depends_on:
       redis:
         condition: service_healthy
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cart.rule=PathPrefix(`/api/cart`)"
+      - "traefik.http.routers.cart.entrypoints=web"
+      - "traefik.http.services.cart.loadbalancer.server.port=8002"
+      - "traefik.http.middlewares.cart-strip.stripprefix.prefixes=/api"
+      - "traefik.http.routers.cart.middlewares=cart-strip"
+    
+    networks:
+      - microservice_network
+      
   customer_service:
     build: ./services/customer_service
-    
     ports:
       - "8003:8003"
-    
     environment:
       - POSTGRES_CUSTOMER_URL=postgresql+asyncpg://postgres:${DB_PASSWORD}@customer_postgres:5432/customer_db
       - JWT_SECRET=${JWT_SECRET}
-    
     depends_on:
       customer_postgres:
         condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.customer.rule=PathPrefix(`/api/customers`)"
+      - "traefik.http.routers.customer.entrypoints=web"
+      - "traefik.http.services.customer.loadbalancer.server.port=8003"
+      - "traefik.http.middlewares.customer-strip.stripprefix.prefixes=/api"
+      - "traefik.http.routers.customer.middlewares=customer-strip"
+    
+    networks:
+      - microservice_network
 
   order_service:
     build: ./services/order_service
-
     ports:
       - "8004:8004"
-  
     environment:
       - POSTGRES_ORDER_URL=postgresql://postgres:${DB_PASSWORD}@order_postgres:5432/order_db
-  
+    
     depends_on:
       order_postgres:
         condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.order.rule=PathPrefix(`/api/orders`)"
+      - "traefik.http.routers.order.entrypoints=web"
+      - "traefik.http.services.order.loadbalancer.server.port=8004"
+      - "traefik.http.middlewares.order-strip.stripprefix.prefixes=/api"
+      - "traefik.http.routers.order.middlewares=order-strip"
+    networks:
+      - microservice_network
+
+  message_service:
+    build: ./services/message_service
+    ports:
+      - "8005:8005"
+    environment:
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672/
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.message.rule=PathPrefix(`/api/send`)"
+      - "traefik.http.routers.message.entrypoints=web"
+      - "traefik.http.services.message.loadbalancer.server.port=8005"
+      - "traefik.http.middlewares.message-strip.stripprefix.prefixes=/api"
+      - "traefik.http.routers.message.middlewares=message-strip"
+    networks:
+      - microservice_network
 
   catalog_postgres:
     image: postgres:latest
-    
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: catalog_db
-    
     ports:
       - "5432:5432"
-    
     logging:
       driver: "none"
-    
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d catalog_db"]
       interval: 5s
       timeout: 5s
       retries: 3
+    networks:
+      - microservice_network
 
   customer_postgres:
     image: postgres:latest
-    
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: customer_db
-    
     ports:
       - "5433:5432"
-    
     logging:
       driver: "none"
-    
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d customer_db"]
       interval: 5s
       timeout: 5s
       retries: 3
+    networks:
+      - microservice_network
 
   order_postgres:
     image: postgres:latest
-    
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: order_db
-    
     ports:
       - "5434:5432"
-    
     logging:
       driver: "none"
-    
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d order_db"]
       interval: 5s
       timeout: 5s
       retries: 3
+    networks:
+      - microservice_network
 
   redis:
     image: redis:latest
-    
     ports:
       - "6379:6379"
-    
     logging:
       driver: "none"
-    
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 3
+    networks:
+      - microservice_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    logging:
+      driver: "none"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservice_network
+
+networks:
+  microservice_network:
+    driver: bridge
+
